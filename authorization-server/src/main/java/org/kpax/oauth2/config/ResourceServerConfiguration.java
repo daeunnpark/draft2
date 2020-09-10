@@ -14,6 +14,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http.antMatcher("/user/**")
                 .authorizeRequests()
                 .anyRequest().authenticated();
+        System.out.println("******resourcee");
     }
 
 }

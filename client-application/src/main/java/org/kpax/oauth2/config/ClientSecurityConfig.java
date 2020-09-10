@@ -31,11 +31,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     protected OAuth2ProtectedResourceDetails resource() {
-        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("custom");
+        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("daeun");
         ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
-        List scopes = new ArrayList<String>(2);
-        scopes.add("write");
-        scopes.add("read");
+        List scopes = new ArrayList<String>(3);
+        scopes.add("email");
+        scopes.add("phone");
+        scopes.add("name");
         resource.setAccessTokenUri(clientRegistration.getProviderDetails().getTokenUri());
         resource.setClientId(clientRegistration.getClientId());
         resource.setClientSecret(clientRegistration.getClientSecret());

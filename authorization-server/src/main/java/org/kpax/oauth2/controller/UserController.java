@@ -1,10 +1,17 @@
 package org.kpax.oauth2.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 public class UserController {
@@ -19,4 +26,29 @@ public class UserController {
     public String test(Principal user) {
         return "The principal's name is: " + user.getName();
     }
+
+
+    @RequestMapping("/user/info")
+    public Map<String, Object> userData(@AuthenticationPrincipal OAuth2Authentication auth, Principal p) {
+        Map<String, Object> profile = new HashMap<String, Object>();
+
+        Set<String> scopes = auth.getOAuth2Request().getScope();
+        System.out.println(scopes);
+
+        if (scopes.contains("id")) {
+            profile.put("id", "*Daeunnnn*");
+        }
+        if (scopes.contains("name")) {
+            profile.put("name", "박다은");
+        }
+        if (scopes.contains("email")) {
+            profile.put("email", "daeunn.park@naver.com");
+        }
+        if (scopes.contains("phone")) {
+            profile.put("phone", "01012345678");
+        }
+
+        return profile;
+    }
+
 }

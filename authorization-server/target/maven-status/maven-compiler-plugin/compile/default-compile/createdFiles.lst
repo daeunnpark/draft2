@@ -1,0 +1,12 @@
+org/kpax/oauth2/model/User.class
+org/kpax/oauth2/AuthorizationServer.class
+org/kpax/oauth2/service/CustomUserDetailsService.class
+org/kpax/oauth2/config/SecurityConfig.class
+org/kpax/oauth2/repository/UserRepository.class
+org/kpax/oauth2/service/CustomOauth2ClientDetailsService.class
+org/kpax/oauth2/config/AuthServerConfig.class
+org/kpax/oauth2/controller/UserController.class
+org/kpax/oauth2/config/ResourceServerConfiguration.class
+org/kpax/oauth2/repository/Oauth2ClientRepository.class
+org/kpax/oauth2/model/Oauth2Client.class
+org/kpax/oauth2/model/CustomUserDetails.class
