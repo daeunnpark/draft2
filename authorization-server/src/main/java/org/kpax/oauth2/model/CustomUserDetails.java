@@ -18,7 +18,7 @@ public class CustomUserDetails implements UserDetails{
 	private List<GrantedAuthority> authorities;
 	
 	public CustomUserDetails(User user) {
-		this.name=user.getName();
+		//this.name=user.getName();
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.active = user.isActive();

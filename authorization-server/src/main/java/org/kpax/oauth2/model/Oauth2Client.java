@@ -39,10 +39,6 @@ public class Oauth2Client implements ClientDetails {
         this.grantTypes = grantTypes;
     }
 
-    public String getRedirectUri() {
-        return redirectUri;
-    }
-
     public void setAuthorities(String authorities) {
         this.authorities = authorities;
     }
@@ -169,10 +165,11 @@ public class Oauth2Client implements ClientDetails {
     public void setClientSecret(String clientSecret) {
     	this.clientSecret=clientSecret;
     }
-    
+
+    /*
     public void setRedirectUri(String redirectUri) {
 		this.redirectUri = redirectUri;
-	}
+	}*/
 
     public User getUser() {
         return this.user;
