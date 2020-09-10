@@ -25,25 +25,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    private String REDIRECT_URI_PARAM_COOKIE_NAME="redirect_uri";
-
     @Autowired
     private CookieUtils cookieUtils;
-
-    private int maxAge = 10000;
 
     @Value("${app.jwtRedirectUri}")
     private String redirect_uri;
 
-    /*
-    @Autowired
-    OAuth2AuthenticationSuccessHandler(JwtTokenProvider tokenProvider){s
-        this.tokenProvider = tokenProvider;
-        // this.appProperties = appProperties;
-        // this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
-        System.out.println("****oauth2authenticationSuccess");
-    }
-     */
+    private int maxAge = 10000;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -51,6 +39,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
              logger.debug("Response has already been committed. Unable to redirect to " + redirect_uri);
             return;
         }
+
         clearAuthenticationAttributes(request, response);
         cookieUtils.addCookie(response, "access-token", tokenProvider.generateToken(authentication) ,maxAge);
         getRedirectStrategy().sendRedirect(request, response, redirect_uri);
@@ -59,21 +48,4 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
     }
-/*
-    private boolean isAuthorizedRedirectUri(String uri) {
-        URI clientRedirectUri = URI.create(uri);
-
-        return appProperties.getOauth2().getAuthorizedRedirectUris()
-                .stream()
-                .anyMatch(authorizedRedirectUri -> {
-                    // Only validate host and port. Let the clients use different paths if they want to
-                    URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        return true;
-                    }
-                    return false;
-                });
-    }
-     */
 }
