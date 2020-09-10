@@ -1,5 +1,8 @@
 package org.kpax.oauth2.controller;
 
+import org.kpax.oauth2.model.User;
+import org.kpax.oauth2.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +18,8 @@ import java.util.Set;
 
 @RestController
 public class UserController {
+
+    @Autowired UserRepository userRepository;
 
     @RequestMapping("/user/me")
     public Principal user(Principal principal) {
@@ -33,19 +38,21 @@ public class UserController {
         Map<String, Object> profile = new HashMap<String, Object>();
 
         Set<String> scopes = auth.getOAuth2Request().getScope();
+        User user = userRepository.findByUsername(p.getName()).get();
+
         System.out.println(scopes);
 
         if (scopes.contains("id")) {
-            profile.put("id", "*Daeunnnn*");
+            profile.put("id", user.getUsername());
         }
         if (scopes.contains("name")) {
-            profile.put("name", "박다은");
+            profile.put("name", user.getName());
         }
         if (scopes.contains("email")) {
-            profile.put("email", "daeunn.park@naver.com");
+            profile.put("email", user.getEmail());
         }
         if (scopes.contains("phone")) {
-            profile.put("phone", "01012345678");
+            profile.put("phone", user.getPhone());
         }
 
         return profile;

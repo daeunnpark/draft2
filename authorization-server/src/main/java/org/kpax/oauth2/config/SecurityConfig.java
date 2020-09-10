@@ -1,5 +1,6 @@
 package org.kpax.oauth2.config;
 
+import org.kpax.oauth2.service.CustomOauth2ClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,14 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /*
     @Autowired
     private ClientDetailsService clientDetailsService;
+     */
+
+    @Autowired
+    private CustomOauth2ClientDetailsService clientDetailsService;
+
 
     @Autowired
     private UserDetailsService customUserDetailsService;

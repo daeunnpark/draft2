@@ -1,5 +1,6 @@
 package org.kpax.oauth2.config;
 
+import org.kpax.oauth2.service.CustomOauth2ClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,10 +36,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    /*
     @Autowired
-    private ClientDetailsService customClientDetailsService;
-*/
+    private CustomOauth2ClientDetailsService customClientDetailsService;
+
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
@@ -58,8 +58,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
-        //clients.withClientDetails(customClientDetailsService);
+        clients.withClientDetails(customClientDetailsService);
 
+        /*
         clients.inMemory()
                 .withClient("testClientID")
                 .secret(passwordEncoder.encode("testClientPW"))
@@ -67,6 +68,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .scopes("id", "name", "email", "phone")
                 .redirectUris("http://localhost:8082/client/login/oauth2/code/daeun")
         ;
+        */
 
     }
 

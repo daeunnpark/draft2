@@ -15,8 +15,8 @@ spring:
       client:
         registration:
           daeun:
-            client-id: testClientID
-            client-secret: testClientPW
+            client-id: aaa
+            client-secret: ccc
             authorization-grant-type: authorization_code
             redirect-uri-template: http://localhost:8082/client/login/oauth2/code/daeun
         provider:
