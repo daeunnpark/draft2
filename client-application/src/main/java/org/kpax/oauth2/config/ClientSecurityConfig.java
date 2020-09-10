@@ -1,5 +1,6 @@
 package org.kpax.oauth2.config;
 
+import org.kpax.oauth2.security.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public OAuth2RestOperations restTemplate(OAuth2ClientContext oauth2ClientContext) {
@@ -51,7 +55,7 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .oauth2Login();
+                .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler);
     }
 
 }
