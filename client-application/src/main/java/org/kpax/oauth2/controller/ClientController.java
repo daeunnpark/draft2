@@ -39,10 +39,13 @@ public class ClientController {
         String message = restOperations.getForObject("http://localhost:8080/auth/user/also-me", String.class);
         return "Message from auth server: " + message;
     }
+
 */
+
     @RequestMapping("/userInfo")
     @ResponseBody
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User user) {
+        System.out.println("**user info heree");
         return user.getAttributes();
     }
 

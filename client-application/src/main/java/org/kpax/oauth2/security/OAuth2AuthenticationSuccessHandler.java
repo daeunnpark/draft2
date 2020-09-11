@@ -41,7 +41,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         clearAuthenticationAttributes(request, response);
-        cookieUtils.addCookie(response, "access-token", tokenProvider.generateToken(authentication) ,maxAge);
+        cookieUtils.addCookie(response, "access-token", tokenProvider.generateToken(authentication), maxAge);
         getRedirectStrategy().sendRedirect(request, response, redirect_uri);
     }
 

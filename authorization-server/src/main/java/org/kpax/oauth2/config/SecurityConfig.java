@@ -46,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .permitAll()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .cors().disable();
         System.out.println("******secu 111");
     }
 

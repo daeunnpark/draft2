@@ -13,8 +13,8 @@ spring:
       client:
         registration:
           daeun:
-            client-id: dasom'sApp1599720268677
-            client-secret: cbf1d15e0d45870fc068f730caab8c35c77f6e45be5fc6b86dbd2444296c333d
+            client-id: my_first_app1599720866673
+            client-secret: dc1a9e7f12adc94bff1a1ddc657d4a31849d3697ffb17528059a68f720a66eac
             authorization-grant-type: authorization_code
             redirect-uri-template: http://localhost:8082/client/login/oauth2/code/daeun
         provider:
