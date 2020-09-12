@@ -42,6 +42,12 @@ public class ClientController {
 
 */
 
+    @RequestMapping("/callback")
+    public String callback() {
+        System.out.println("**call back sheree");
+        return "<div> Callback</div>";
+    }
+
     @RequestMapping("/userInfo")
     @ResponseBody
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User user) {

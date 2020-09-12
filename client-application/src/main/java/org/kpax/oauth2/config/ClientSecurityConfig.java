@@ -1,7 +1,8 @@
 package org.kpax.oauth2.config;
 
-import org.kpax.oauth2.security.JwtAuthenticationFilter;
-import org.kpax.oauth2.security.OAuth2AuthenticationSuccessHandler;
+import org.kpax.oauth2.security.api.JwtAuthenticationFilter;
+import org.kpax.oauth2.security.oauth2.CustomOAuth2UserService;
+import org.kpax.oauth2.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,12 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @EnableOAuth2Client
@@ -31,12 +36,16 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
+
     @Bean
     public OAuth2RestOperations restTemplate(OAuth2ClientContext oauth2ClientContext) {
         return new OAuth2RestTemplate(resource(), oauth2ClientContext);
@@ -59,20 +68,29 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+        http
+                .cors()
+                    .and()
                 .csrf()
-                .disable()
-                .cors().disable()
-                .authorizeRequests().antMatchers("/").permitAll()
-                .and()
-                .antMatcher("/**")
+                    .disable()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler);
+                    .antMatchers("/callback")
+                    .permitAll()
+                    .and()
+
+                .antMatcher("/**")
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
+                .oauth2Login()
+                    .userInfoEndpoint()
+                        .userService(customOAuth2UserService)
+                        .and()
+                    .successHandler(oAuth2AuthenticationSuccessHandler);
 
         /*
         http.
@@ -83,8 +101,21 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler);
 */
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         System.out.println("******CONFIGUREEEE");
+    }
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        System.out.println("bean2222");
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

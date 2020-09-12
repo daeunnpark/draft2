@@ -14,7 +14,6 @@ import java.util.*;
 @Table(name = "Client")
 public class Oauth2Client implements ClientDetails {
 
-
     @Id
     private String clientId;
     private String clientSecret;
