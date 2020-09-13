@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -20,7 +22,8 @@ public class UserController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse getChatMembers(@AuthenticationPrincipal UserPrincipal principal) {
-        return new ApiResponse(true, userService.getAll());
+        Object data = Collections.singletonMap("users", userService.getAll());
+        return new ApiResponse(true,data);
     }
 
 }

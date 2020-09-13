@@ -1,10 +1,11 @@
 package org.kpax.oauth2.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -20,9 +21,9 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String image;
+	private String image = "https://www.azocleantech.com/images/Article_Images/ImageForArticle_1061_15837536188863190.png";
 
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	@Getter(value = AccessLevel.NONE)
 	private String username;
@@ -31,8 +32,8 @@ public class User {
 	@Getter(value = AccessLevel.NONE)
 	private String phone;
 
-	@JsonIgnore
-	@ManyToMany
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@ManyToMany(mappedBy = "members")
 	private Set<Chat> chats = new HashSet<>();
 
 }

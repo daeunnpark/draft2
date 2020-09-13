@@ -9,6 +9,5 @@ public interface IChatService {
     List<Chat> findByUserId(Long userId);
     //Optional<Chat> findByUserIdAndChatId(Long userId, Long chatId);
     void deleteById(Long chatId);
-    Chat save(Chat chat);
 }
 

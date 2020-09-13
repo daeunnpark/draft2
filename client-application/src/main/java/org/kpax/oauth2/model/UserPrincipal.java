@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
 
-
     private Long id;
     private String password;
     private List<GrantedAuthority> authorities;

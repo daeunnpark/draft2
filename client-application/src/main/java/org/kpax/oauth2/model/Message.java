@@ -1,9 +1,16 @@
 package org.kpax.oauth2.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+
 import javax.persistence.*;
 
 
 @Entity
+@Getter
+@Setter
 public class Message {
     public enum MessageType{
         TEXT,
@@ -14,11 +21,13 @@ public class Message {
     private Long id;
     @Enumerated(EnumType.STRING)
     private MessageType type;
+
     @OneToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Chat chat;
-    @OneToOne
-    private User user;
+    private Long userId;
     private String content;
-    private String sentAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date sentAt;
     private Integer unreadCnt;
 }

@@ -1,5 +1,7 @@
 package org.kpax.oauth2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +25,7 @@ public class Chat {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private ChatType type;
+    private ChatType type=ChatType.PRIVATE;
     private String name;
 
     @ManyToMany
@@ -31,14 +33,16 @@ public class Chat {
             joinColumns = @JoinColumn(name= "chat_id"),
             inverseJoinColumns = @JoinColumn(name= "user_id"))
     private Set<User> members = new HashSet<>();
-    @ElementCollection(targetClass=Long.class)
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Long> friendIds = new HashSet<>();
     @OneToOne
     private Message lastMessage;
-    @OneToOne
-    private Message lastAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date lastAt;
     private String image;
-    private Integer unreadCnt;
+    private Integer unreadCnt=0;
 
 
 
