@@ -92,23 +92,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
                         .and()
                     .successHandler(oAuth2AuthenticationSuccessHandler);
 
-        /*
-        http.
-                antMatcher("/**")
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler);
-*/
-        //http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        System.out.println("******CONFIGUREEEE");
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        System.out.println("bean2222");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));

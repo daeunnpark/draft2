@@ -2,67 +2,37 @@ package org.kpax.oauth2.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-
+@Getter
+@Setter
 @Table(name = "User")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String name;
+	private String image="https://hayvets.co.uk/wp-content/uploads/rabbit.png";
+
 	@JsonIgnore
 	private String password;
-	private String name;
+	@Getter(value = AccessLevel.NONE)
 	private String username;
+	@Getter(value = AccessLevel.NONE)
 	private String email;
+	@Getter(value = AccessLevel.NONE)
 	private String phone;
 
-	public Long getId() {
-		return id;
-	}
+	@Getter(value = AccessLevel.NONE)
+	@ManyToMany
+	private Set<Chat> chats = new HashSet<>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 }

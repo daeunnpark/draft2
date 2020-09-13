@@ -1,6 +1,8 @@
 package org.kpax.oauth2.controller;
 
 import org.kpax.oauth2.model.User;
+import org.kpax.oauth2.model.UserPrincipal;
+import org.kpax.oauth2.payload.ApiResponse;
 import org.kpax.oauth2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,30 +31,11 @@ public class JwtController {
     }
 
     @RequestMapping("/check")
-    @ResponseBody
     @PreAuthorize("hasRole('USER')")
-    public Map<String, Object> user(Authentication auth) {
-        System.out.println("checkinggg");
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+    public ApiResponse user(@AuthenticationPrincipal UserPrincipal principal) {
 
-        User user = userRepository.findByUsername(userDetails.getUsername()).get();
-
-        System.out.println(user.getName());
-        //System.out.println(user.getName());
-
-        HashMap<String, Object> res = new HashMap<>();
-        HashMap<String, Object> data = new HashMap<>();
-        HashMap<String, Object> userData = new HashMap<>();
-
-        userData.put("id", 1);
-        userData.put("name", user.getName());
-        userData.put("image", "https://hayvets.co.uk/wp-content/uploads/rabbit.png");
-
-        data.put("user", userData);
-
-        res.put("code", 200);
-        res.put("message", "OK");
-        res.put("data", data);
+        User user = userRepository.findById(principal.getId()).get();
+        ApiResponse res = new ApiResponse(true, user);
 
         return res;
     }

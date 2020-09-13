@@ -1,6 +1,6 @@
 package org.kpax.oauth2.security.api;
 
-import org.kpax.oauth2.service.CustomUserDetailsService;
+import org.kpax.oauth2.service.user.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
