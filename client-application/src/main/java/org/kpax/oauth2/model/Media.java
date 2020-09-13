@@ -2,13 +2,13 @@ package org.kpax.oauth2.model;
 
 import javax.persistence.*;
 
-enum MediaType{
-    PHOTO,
-    VIDEO
-}
 
 @Entity
 public class Media {
+    public enum MediaType{
+        PHOTO,
+        VIDEO
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -23,8 +23,12 @@ public class ChatService implements IChatService {
         chatRepository.deleteById(chatId);
     }
 
-    public Chat save() {
-        return chatRepository.save(new Chat());
+    public Chat findById(Long chatId){
+        return chatRepository.findById(chatId).get();
+    }
+
+    public Chat save(Chat chat) {
+        return chatRepository.save(chat);
     }
 
 }

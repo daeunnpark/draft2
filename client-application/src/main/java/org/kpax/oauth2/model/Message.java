@@ -2,12 +2,13 @@ package org.kpax.oauth2.model;
 
 import javax.persistence.*;
 
-enum MessageType{
-    TEXT,
-    PHOTO
-}
+
 @Entity
 public class Message {
+    public enum MessageType{
+        TEXT,
+        PHOTO
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

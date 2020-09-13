@@ -33,11 +33,7 @@ public class JwtController {
     @RequestMapping("/check")
     @PreAuthorize("hasRole('USER')")
     public ApiResponse user(@AuthenticationPrincipal UserPrincipal principal) {
-
-        User user = userRepository.findById(principal.getId()).get();
-        ApiResponse res = new ApiResponse(true, user);
-
-        return res;
+        return new ApiResponse(true, userRepository.findById(principal.getId()).get());
     }
 
 }

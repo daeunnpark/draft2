@@ -20,7 +20,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String image="https://hayvets.co.uk/wp-content/uploads/rabbit.png";
+	private String image;
 
 	@JsonIgnore
 	private String password;
@@ -31,7 +31,7 @@ public class User {
 	@Getter(value = AccessLevel.NONE)
 	private String phone;
 
-	@Getter(value = AccessLevel.NONE)
+	@JsonIgnore
 	@ManyToMany
 	private Set<Chat> chats = new HashSet<>();
 

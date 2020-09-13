@@ -6,6 +6,7 @@ import org.kpax.oauth2.service.message.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -16,6 +17,8 @@ public class MessageService implements IMessageService {
 
     @Override
     public List<Message> findRecentMsg(Long chatId) {
-        return messageRepository.findTop20ByChatIdOrderBySentAtDesc(chatId);
+        List<Message> msgs =messageRepository.findTop20ByChatIdOrderBySentAtDesc(chatId);
+        Collections.reverse(msgs);
+        return msgs;
     }
 }
