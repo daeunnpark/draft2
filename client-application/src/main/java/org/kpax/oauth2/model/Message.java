@@ -6,6 +6,7 @@ import lombok.Setter;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -28,6 +29,6 @@ public class Message {
     private Long userId;
     private String content;
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date sentAt;
+    private Date sentAt;
     private Integer unreadCnt;
 }

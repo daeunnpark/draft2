@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -40,7 +37,7 @@ public class Chat {
     @OneToOne
     private Message lastMessage;
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date lastAt;
+    private Date lastAt;
     private String image;
     private Integer unreadCnt=0;
 

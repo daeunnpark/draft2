@@ -33,14 +33,13 @@ public class ClientController {
     public String home(Principal principal) {
         return "The principal's name is: " + principal.getName();
     }
-
+*/
     @RequestMapping("/its-also-me")
     public String home() {
         String message = restOperations.getForObject("http://localhost:8080/auth/user/also-me", String.class);
         return "Message from auth server: " + message;
     }
 
-*/
 
     @RequestMapping("/callback")
     public String callback() {
