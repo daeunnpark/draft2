@@ -5,11 +5,13 @@ import org.kpax.oauth2.repository.UserRepository;
 import org.kpax.oauth2.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService implements IUserService {
     @Autowired
     UserRepository userRepository;

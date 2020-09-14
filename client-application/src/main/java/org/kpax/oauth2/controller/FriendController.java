@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/friends")
 public class FriendController {
@@ -20,7 +23,9 @@ public class FriendController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse getFriends(@AuthenticationPrincipal UserPrincipal principal) {
-        return new ApiResponse(true, relationshipService.findFriendsByUserId(principal.getId()));
+        List<User> friends = relationshipService.findFriendsByUserId(principal.getId());
+        Object data = Collections.singletonMap("friends", friends);
+        return new ApiResponse(true, data);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

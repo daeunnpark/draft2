@@ -1,6 +1,7 @@
 package org.kpax.oauth2.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.management.relation.Relation;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Relationship {
 
     public enum RelationshipType{

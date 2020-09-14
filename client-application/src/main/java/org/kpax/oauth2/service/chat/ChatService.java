@@ -33,7 +33,8 @@ public class ChatService implements IChatService {
     }
 
     public void exit(Long userId, Long chatId){
-        //chatRepository.deleteByChatIdAndMembersId(chatId, userId);
+        User user = userService.findById(userId).get();
+        chatRepository.findById(chatId).get().getMembers().remove(user);
     }
 
     public Chat findById(Long chatId){
