@@ -22,7 +22,7 @@ import java.net.URLEncoder;
 import java.util.*;
 
 @RestController
-@RequestMapping("/chats")
+@RequestMapping("/api/chats")
 public class ChatController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class ChatController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse getChats(@AuthenticationPrincipal UserPrincipal principal) {
-        Set<Chat> chats = userService.findById(principal.getId()).get().getChats();
+        List<Chat> chats = userService.findById(principal.getId()).get().getChats();
         Object data = Collections.singletonMap("chats", chats);
         return new ApiResponse(true, data);
     }
@@ -60,11 +60,14 @@ public class ChatController {
         return new ApiResponse(true, data);
     }
 
+    /*
     @GetMapping(value = "/{chatId}/members", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse getChatMembers(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long chatId) {
         Object data = Collections.singletonMap("members",chatService.findById(chatId).getMembers());
         return new ApiResponse(true, data);
     }
+     */
+
     @GetMapping(value = "/{chatId}/translate", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse translate(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long chatId) {
 

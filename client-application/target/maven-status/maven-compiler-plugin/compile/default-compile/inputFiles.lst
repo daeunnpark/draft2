@@ -1,3 +1,4 @@
+/Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/controller/WebSocketController.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/repository/RelationshipRepository.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/security/api/JwtTokenProvider.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/model/User.java
@@ -14,6 +15,7 @@
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/model/Media.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/controller/ClientController.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/controller/ChatController.java
+/Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/config/WebSocketConfig.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/service/message/IMessageService.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/controller/FriendController.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/model/Relationship.java
@@ -27,6 +29,7 @@
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/payload/ApiResponse.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/service/chat/IChatService.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/security/oauth2/OAuth2UserInfo.java
+/Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/controller/WebSocketEventListener.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/service/relationship/IRelationshipService.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/repository/MediaRepository.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/service/user/UserService.java

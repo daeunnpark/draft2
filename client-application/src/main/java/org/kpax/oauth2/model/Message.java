@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -13,16 +12,16 @@ import java.util.Date;
 @Getter
 @Setter
 public class Message {
-    public enum MessageType{
+    public enum MessageType {
+        IMOTICON,
         TEXT,
-        PHOTO
+        NOTI
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private MessageType type;
-
     @OneToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Chat chat;
@@ -31,4 +30,6 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private Date sentAt;
     private Integer unreadCnt;
+
+
 }

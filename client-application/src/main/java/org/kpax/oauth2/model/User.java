@@ -8,9 +8,7 @@ import lombok.Setter;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -33,7 +31,15 @@ public class User {
 	private String phone;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@Getter(AccessLevel.NONE)
 	@ManyToMany(mappedBy = "members")
-	private Set<Chat> chats = new HashSet<>();
+	private List<Chat> chats = new ArrayList<>();
+
+	public List<Chat> getChats() {
+		System.out.println("**** custom getchat()");
+		this.chats.sort(Comparator.comparing(Chat::getLastAt).reversed());
+		return this.chats;
+	}
+
 
 }

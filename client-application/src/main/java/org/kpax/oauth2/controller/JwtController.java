@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Collections;
 
 @RestController
+@RequestMapping("/api")
 public class JwtController {
 
     @Autowired UserRepository userRepository;

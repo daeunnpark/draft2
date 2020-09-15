@@ -2,6 +2,7 @@ package org.kpax.oauth2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,11 +26,18 @@ public class Chat {
     private ChatType type=ChatType.PRIVATE;
     private String name;
 
+    public List<User> getMembers() {
+        System.out.println("***Custom memberss");
+        this.members.sort(Comparator.comparing(User::getName));
+        return members;
+    }
+
+    @Getter(AccessLevel.NONE)
     @ManyToMany
     @JoinTable(name= "chat_user",
             joinColumns = @JoinColumn(name= "chat_id"),
             inverseJoinColumns = @JoinColumn(name= "user_id"))
-    private Set<User> members = new HashSet<>();
+    private List<User> members = new ArrayList<>();
 
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

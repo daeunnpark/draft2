@@ -1,7 +1,5 @@
 server:
-    port: 8082
-    servlet:
-      context-path: /api
+    port: 8080
 
 security:
   basic:
@@ -13,13 +11,13 @@ spring:
       client:
         registration:
           daeun:
-            client-id: my_first_app1599720866673
-            client-secret: dc1a9e7f12adc94bff1a1ddc657d4a31849d3697ffb17528059a68f720a66eac
+            client-id: chocochoco1600150947626
+            client-secret: 493dab9a17f55be6d34a1f8b091295e26f1687adb06190b6b5d3d405f11cba71
             authorization-grant-type: authorization_code
-            redirect-uri-template: http://localhost:8082/api/login/oauth2/code/daeun
+            redirect-uri-template: http://localhost:8080/login/oauth2/code/daeun
         provider:
           daeun:
-            authorization-uri: http://localhost:8080/auth/oauth/authorize
-            token-uri: http://localhost:8080/auth/oauth/token
-            user-info-uri: http://localhost:8080/auth/user/info
+            authorization-uri: http://localhost:8082/auth/oauth/authorize
+            token-uri: http://localhost:8082/auth/oauth/token
+            user-info-uri: http://localhost:8082/auth/user/info
             user-name-attribute: id

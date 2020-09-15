@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.Relation;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -32,7 +29,7 @@ public class RelationshipService implements IRelationshipService {
             User friend = friendship.getUser1().getId() ==userId ? friendship.getUser2() : friendship.getUser1();
             friends.add(friend);
         }
-
+        friends.sort(Comparator.comparing(User::getName));
         return friends;
     }
 

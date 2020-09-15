@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -43,7 +40,8 @@ public class ChatService implements IChatService {
 
     public Chat create(Long userId, Chat chat){
         chat.getFriendIds().add(userId);
-        Set<User> members = new HashSet<>();
+
+        List<User> members = new ArrayList<>();
 
         for(Long id : chat.getFriendIds()){
             User friend = userService.findById(id).get();
@@ -54,6 +52,7 @@ public class ChatService implements IChatService {
         if(members.size()>2){
             chat.setType(Chat.ChatType.GROUP);
         }
+        chat.setLastAt(new Date());
 
         return chatRepository.save(chat);
     }

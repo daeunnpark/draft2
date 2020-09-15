@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value="/users", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse getChatMembers(@AuthenticationPrincipal UserPrincipal principal) {
         Object data = Collections.singletonMap("users", userService.getAll());
         return new ApiResponse(true,data);

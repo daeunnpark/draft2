@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/friends")
+@RequestMapping("/api/friends")
 public class FriendController {
 
     @Autowired
