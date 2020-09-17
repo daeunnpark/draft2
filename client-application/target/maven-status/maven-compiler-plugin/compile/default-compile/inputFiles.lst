@@ -30,6 +30,7 @@
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/service/chat/IChatService.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/security/oauth2/OAuth2UserInfo.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/controller/WebSocketEventListener.java
+/Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/config/WebSocketConfig2.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/service/relationship/IRelationshipService.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/repository/MediaRepository.java
 /Users/user/Desktop/ncloud/final/oauth2example/client-application/src/main/java/org/kpax/oauth2/service/user/UserService.java

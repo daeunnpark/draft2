@@ -7,6 +7,7 @@ org/kpax/oauth2/model/Message$MessageType.class
 org/kpax/oauth2/util/CookieUtils.class
 org/kpax/oauth2/security/oauth2/CustomOAuth2UserInfo.class
 org/kpax/oauth2/payload/ApiResponse.class
+org/kpax/oauth2/config/WebSocketConfig$1.class
 org/kpax/oauth2/security/oauth2/CustomOAuth2UserService.class
 org/kpax/oauth2/model/Chat.class
 org/kpax/oauth2/model/Media$MediaType.class
@@ -39,4 +40,5 @@ org/kpax/oauth2/service/chat/ChatService.class
 org/kpax/oauth2/model/Chat$ChatType.class
 org/kpax/oauth2/model/Relationship.class
 org/kpax/oauth2/controller/ClientController.class
+org/kpax/oauth2/config/WebSocketConfig2.class
 org/kpax/oauth2/model/Media.class

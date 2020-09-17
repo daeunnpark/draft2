@@ -87,12 +87,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
 
                 .authorizeRequests()
-                    .antMatchers("/callback", "/api/index", "/api/home")
+                    .antMatchers("/", "/index", "/api/home", "/ws/chat")
                     .permitAll()
                     .and()
-
-                //.antMatcher("/**")
-                .antMatcher("/api/**")
+                //Test
+                .antMatcher("/**")
+                //.antMatcher("/api/**")
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
@@ -111,11 +111,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/ws/chat/**");
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        System.out.println("corss disabledddd");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));

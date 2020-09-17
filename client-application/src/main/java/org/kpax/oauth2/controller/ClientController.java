@@ -1,10 +1,17 @@
 package org.kpax.oauth2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,6 +69,20 @@ public class ClientController {
         ModelAndView page = new ModelAndView();
         page.setViewName("index");
         return page;
+    }
+
+    private final Resource indexPage;
+
+    public ClientController(@Value("classpath:/static/index.html") Resource indexPage) {
+        this.indexPage = indexPage;
+    }
+
+    @GetMapping(value = {"/", "/mail"})
+    public ResponseEntity<Resource> getFirstPage() {
+        System.out.println("FE test");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_HTML);
+        return new ResponseEntity<>(indexPage, headers, HttpStatus.OK);
     }
 
 

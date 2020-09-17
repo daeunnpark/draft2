@@ -23,6 +23,9 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.Arrays;
 
@@ -54,9 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("******secu 111");
     }
 
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        System.out.println("bean");
+        System.out.println("bean222");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
@@ -67,6 +71,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+/*
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
+            }
+        };
+    }
+*/
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         /*

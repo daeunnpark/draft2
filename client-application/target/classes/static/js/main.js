@@ -27,7 +27,11 @@ function connect(event) {
         var socket = new SockJS('/ws/chat');
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, onConnected, onError);
+        var headers = {
+            'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNjAwMTUxMDk0LCJleHAiOjE2MDA3NTU4OTR9.vkQ6ppYVbJLRc2HFEkL-kpY3clyFd7bt9jKew2_9DGirAwavxRj9T6Zn1sAmC7gPe3h49zUtcsUfnoQXMFAkzA'
+        };
+        stompClient.connect(headers, onConnected, onError);
+        //stompClient.connect({}, onConnected, onError);
     }
     event.preventDefault();
 }

@@ -23,12 +23,6 @@ public class JwtController {
         return page;
     }
 
-    @RequestMapping("/index")
-    public ModelAndView home2(){
-        ModelAndView page = new ModelAndView("index");
-        return page;
-    }
-
     @RequestMapping("/check")
     public ApiResponse user(@AuthenticationPrincipal UserPrincipal principal) {
         Object data = Collections.singletonMap("user", userRepository.findById(principal.getId()).get());
