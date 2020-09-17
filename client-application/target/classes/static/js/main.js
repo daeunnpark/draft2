@@ -17,13 +17,14 @@ var colors = [
 ];
 
 function connect(event) {
+    console.log("connect");
     username = document.querySelector('#name').value.trim();
 
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        var socket = new SockJS('/ws');
+        var socket = new SockJS('/ws/chat');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
@@ -34,12 +35,13 @@ function connect(event) {
 
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
+    console.log("Onconnected");
+    stompClient.subscribe('/sub/public', onMessageReceived);
 
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
+    stompClient.send("/pub/chat/addUser",
         {},
-        JSON.stringify({sender: username, type: 'JOIN'})
+        JSON.stringify({userId: username, type: 'NOTI'})
     )
 
     connectingElement.classList.add('hidden');
@@ -53,16 +55,17 @@ function onError(error) {
 
 
 function sendMessage(event) {
+    console.log("send message");
     var messageContent = messageInput.value.trim();
 
     if(messageContent && stompClient) {
         var chatMessage = {
-            sender: username,
+            userId: username,
             content: messageInput.value,
-            type: 'CHAT'
+            type: 'TEXT'
         };
 
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send("/pub/chat/message", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
@@ -70,28 +73,29 @@ function sendMessage(event) {
 
 
 function onMessageReceived(payload) {
+    console.log("message received");
     var message = JSON.parse(payload.body);
 
     var messageElement = document.createElement('li');
 
-    if(message.type === 'JOIN') {
+    if(message.type === 'NOTI') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
+        message.content = message.userId + ' joined!';
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
+        message.content = message.userId+ ' left!';
     } else {
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);
+        var avatarText = document.createTextNode(message.userId[0]);
         avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+        avatarElement.style['background-color'] = getAvatarColor(message.userId);
 
         messageElement.appendChild(avatarElement);
 
         var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(message.sender);
+        var usernameText = document.createTextNode(message.userId);
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
     }
@@ -108,10 +112,14 @@ function onMessageReceived(payload) {
 
 
 function getAvatarColor(messageSender) {
-    var hash = 0;
-    for (var i = 0; i < messageSender.length; i++) {
-        hash = 31 * hash + messageSender.charCodeAt(i);
+    var hash = messageSender;
+    console.log("messageSender = " + messageSender);
+
+/*
+    for (var i = 0; i < messageSender; i++) {
+        hash = 31 * hash;
     }
+*/
 
     var index = Math.abs(hash % colors.length);
     return colors[index];

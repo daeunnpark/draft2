@@ -4,9 +4,11 @@ import org.kpax.oauth2.security.api.JwtAuthenticationFilter;
 import org.kpax.oauth2.security.oauth2.CustomOAuth2UserService;
 import org.kpax.oauth2.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -50,6 +52,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
     public OAuth2RestOperations restTemplate(OAuth2ClientContext oauth2ClientContext) {
         return new OAuth2RestTemplate(resource(), oauth2ClientContext);
     }
+    @Bean
+    public FilterRegistrationBean preAuthTenantContextInitializerFilterRegistration(JwtAuthenticationFilter filter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+        registration.setEnabled(false);
+        return registration;
+    }
 
     @Bean
     protected OAuth2ProtectedResourceDetails resource() {
@@ -68,6 +76,7 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+
         http
                 .cors()
                     .and()
@@ -78,11 +87,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
 
                 .authorizeRequests()
-                    .antMatchers("/callback")
+                    .antMatchers("/callback", "/api/index", "/api/home")
                     .permitAll()
                     .and()
 
-                .antMatcher("/**")
+                //.antMatcher("/**")
+                .antMatcher("/api/**")
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
@@ -94,9 +104,15 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
+
+
     }
 
-
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -108,6 +124,7 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

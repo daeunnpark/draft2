@@ -11,8 +11,8 @@ spring:
       client:
         registration:
           daeun:
-            client-id: chocochoco1600150947626
-            client-secret: 493dab9a17f55be6d34a1f8b091295e26f1687adb06190b6b5d3d405f11cba71
+            client-id: sally_first_app1600150912610
+            client-secret: 740c6955e09d51423f21cda8aa3d6b0bd8a113aaa546e9ae9486b600aabdaaa6
             authorization-grant-type: authorization_code
             redirect-uri-template: http://localhost:8080/login/oauth2/code/daeun
         provider:

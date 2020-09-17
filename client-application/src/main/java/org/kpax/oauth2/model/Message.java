@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 public class Message {
     public enum MessageType {
-        IMOTICON,
+        EMOTICON,
         TEXT,
         NOTI
     }

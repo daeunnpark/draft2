@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 import java.util.Map;
 
-@RestController
+@Controller
 public class ClientController {
 
     @Autowired
@@ -54,15 +55,14 @@ public class ClientController {
         System.out.println("**user info heree");
         return user.getAttributes();
     }
-/*
+
     @RequestMapping("/index")
-    @ResponseBody
     public ModelAndView homee() {
         System.out.println("***home heree");
         ModelAndView page = new ModelAndView();
         page.setViewName("index");
         return page;
     }
-*/
+
 
 }

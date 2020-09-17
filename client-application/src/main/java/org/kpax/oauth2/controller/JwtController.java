@@ -17,9 +17,15 @@ public class JwtController {
 
     @Autowired UserRepository userRepository;
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public ModelAndView home(){
         ModelAndView page = new ModelAndView("home");
+        return page;
+    }
+
+    @RequestMapping("/index")
+    public ModelAndView home2(){
+        ModelAndView page = new ModelAndView("index");
         return page;
     }
 

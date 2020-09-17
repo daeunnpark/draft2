@@ -60,14 +60,6 @@ public class ChatController {
         return new ApiResponse(true, data);
     }
 
-    /*
-    @GetMapping(value = "/{chatId}/members", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ApiResponse getChatMembers(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long chatId) {
-        Object data = Collections.singletonMap("members",chatService.findById(chatId).getMembers());
-        return new ApiResponse(true, data);
-    }
-     */
-
     @GetMapping(value = "/{chatId}/translate", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse translate(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long chatId) {
 
