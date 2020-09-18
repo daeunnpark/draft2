@@ -29,9 +29,17 @@ public class ChatService implements IChatService {
         chatRepository.deleteById(chatId);
     }
 
-    public void exit(Long userId, Long chatId){
+    public List<Long> exit(Long userId, List<Integer> chatIds){
+        System.out.println(chatIds);
+        List<Long> exitChatIds = new ArrayList<>();
         User user = userService.findById(userId).get();
-        chatRepository.findById(chatId).get().getMembers().remove(user);
+
+        for(Integer chatId : chatIds){
+            Long longChatId = chatId.longValue();
+            chatRepository.findById(longChatId).get().getMembers().remove(user);
+            exitChatIds.add(longChatId);
+        }
+        return exitChatIds;
     }
 
     public Chat findById(Long chatId){
@@ -49,7 +57,10 @@ public class ChatService implements IChatService {
             members.add(friend);
         }
         chat.setMembers(members);
-        if(members.size()>2){
+
+        if(members.size()==1) {
+            chat.setType(Chat.ChatType.SELF);
+        }else if(members.size()>2){
             chat.setType(Chat.ChatType.GROUP);
         }
         chat.setLastAt(new Date());

@@ -16,6 +16,7 @@ import java.util.*;
 public class Chat {
 
     public enum ChatType{
+        SELF,
         PRIVATE,
         GROUP
     }
@@ -48,7 +49,4 @@ public class Chat {
     private Date lastAt;
     private String image;
     private Integer unreadCnt=0;
-
-
-
 }

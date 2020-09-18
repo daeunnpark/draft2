@@ -48,10 +48,48 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter();
     }
 
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+
+        http
+                .cors()
+                    .and()
+                .csrf()
+                    .disable()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+
+                .authorizeRequests()
+                    .antMatchers("/")
+                    .permitAll()
+                    .and()
+                //Test
+                .antMatcher("/**")
+                //.antMatcher("/api/**")
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
+                .oauth2Login()
+                    .userInfoEndpoint()
+                        .userService(customOAuth2UserService)
+                        .and()
+                    .successHandler(oAuth2AuthenticationSuccessHandler);
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/ws/chat/**", "/main**");
+    }
+
     @Bean
     public OAuth2RestOperations restTemplate(OAuth2ClientContext oauth2ClientContext) {
         return new OAuth2RestTemplate(resource(), oauth2ClientContext);
     }
+
     @Bean
     public FilterRegistrationBean preAuthTenantContextInitializerFilterRegistration(JwtAuthenticationFilter filter) {
         FilterRegistrationBean registration = new FilterRegistrationBean(filter);
@@ -74,49 +112,9 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
         return resource;
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-
-        http
-                .cors()
-                    .and()
-                .csrf()
-                    .disable()
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
-
-                .authorizeRequests()
-                    .antMatchers("/", "/index", "/api/home", "/ws/chat")
-                    .permitAll()
-                    .and()
-                //Test
-                .antMatcher("/**")
-                //.antMatcher("/api/**")
-                    .authorizeRequests()
-                    .anyRequest().authenticated()
-                    .and()
-                .oauth2Login()
-                    .userInfoEndpoint()
-                        .userService(customOAuth2UserService)
-                        .and()
-                    .successHandler(oAuth2AuthenticationSuccessHandler);
-
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-
-
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/ws/chat/**");
-    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        System.out.println("corss disabledddd");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));

@@ -6,12 +6,12 @@ import org.springframework.security.config.annotation.web.messaging.MessageSecur
 import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
 
 @Configuration
-public class WebSocketConfig2  extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+public class WebSocketMessageBrokerConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
     @Override
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
         messages.anyMessage().authenticated();
-        System.out.println("****any messageee");
     }
+
     @Override
     protected boolean sameOriginDisabled() {
         return true;

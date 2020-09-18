@@ -1,5 +1,6 @@
 package org.kpax.oauth2.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.kpax.oauth2.model.Chat;
 import org.kpax.oauth2.model.Message;
@@ -16,9 +17,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -44,14 +43,19 @@ public class ChatController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse createChat(@AuthenticationPrincipal UserPrincipal principal, @RequestBody Chat chat) {
         //chatService.create(principal.getId(),chat);
-        Object data = Collections.singletonMap("chat", chatService.create(principal.getId(),chat));
+        Object data = Collections.singletonMap("chat", chatService.create(principal.getId(), chat));
         return new ApiResponse(true, data);
     }
 
-    @DeleteMapping(value = "/{chatId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse deleteChat(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long chatId) {
-        chatService.exit(principal.getId(), chatId);
-        return new ApiResponse(true, null);
+    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse deleteChat(@AuthenticationPrincipal UserPrincipal principal, @RequestBody String json) throws IOException {
+
+        HashMap myMap = new HashMap<String, List<Long>>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        myMap = objectMapper.readValue(json, HashMap.class);
+        List<Long> exitChatIds = chatService.exit(principal.getId(), (List<Integer>) myMap.get("chatIds"));
+        Object data = Collections.singletonMap("chatIds", exitChatIds);
+        return new ApiResponse(true, data);
     }
 
     @GetMapping(value = "/{chatId}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -74,11 +78,11 @@ public class ChatController {
 
         String text = "";
         List<Message> messages = messageService.findRecentMsg(chatId);
-        for(Message m : messages){
-            text+="//" + m.getContent();
+        for (Message m : messages) {
+            text += "//" + m.getContent();
         }
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("source", "ko");
         map.add("target", "en");
         map.add("text", text);
@@ -99,9 +103,9 @@ public class ChatController {
             System.out.println("response received");
             System.out.println(responseEntity.getBody());
             //String [] translated = responseEntity.getBody().get("message");.//split("//");
-            int nth=0;
-            for(Message m : messages){
-               //s m.setContent(translated[nth]);
+            int nth = 0;
+            for (Message m : messages) {
+                //s m.setContent(translated[nth]);
             }
         } else {
             System.out.println("error occurred");
@@ -109,7 +113,7 @@ public class ChatController {
         }
 
 
-        Object data = Collections.singletonMap("translated_messages",messages);
+        Object data = Collections.singletonMap("translated_messages", messages);
         return new ApiResponse(true, data);
     }
 
