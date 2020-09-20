@@ -6,6 +6,7 @@ import org.kpax.oauth2.service.user.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -26,11 +27,19 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    /*
+    @Value("${ebook.chat.relay.host}")
+    private String relayHost;
+
+    @Value("${ebook.chat.relay.port}")
+    private Integer relayPort;
+    */
+
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
@@ -45,13 +54,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");                 // /app
         registry.enableSimpleBroker("/sub");            // /topic
-        /* RabbitMQ
-        registry.enableStompBrokerRelay("/topic")
-                .setRelayHost("localhost")
-                .setRelayPort(61613)
-                .setClientLogin("guest")
-                .setClientPasscode("guest");
-        */
+        // RabbitMQ
+        //registry.enableStompBrokerRelay("/queue/", "/topic/")
+        /*
+        registry.enableStompBrokerRelay("/sub")
+                .setUserDestinationBroadcast("/topic/unresolved.user.dest")
+                .setUserRegistryBroadcast("/topic/registry.broadcast")
+                .setRelayHost(relayHost)
+                .setRelayPort(relayPort);
+
+         */
     }
 
     @Override
@@ -70,6 +82,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         String jwt = getJwtFromSocketRequest(accessor);
 
                         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+
                             Long userId = tokenProvider.getUserIdFromJWT(jwt);
                             System.out.println("****SOCKET**** ID FROM JWT = " + userId);
 
@@ -77,6 +90,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                             accessor.setUser(auth);
+
+
 
                         }
                     } catch (Exception ex) {

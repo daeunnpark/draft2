@@ -23,4 +23,9 @@ public class MessageService implements IMessageService {
         Collections.reverse(msgs);
         return msgs;
     }
+
+    @Override
+    public void addMessage(Message message) {
+        messageRepository.save(message);
+    }
 }

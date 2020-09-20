@@ -15,10 +15,11 @@ import java.util.Collections;
 @RequestMapping("/api")
 public class JwtController {
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @RequestMapping("/home")
-    public ModelAndView home(){
+    public ModelAndView home() {
         ModelAndView page = new ModelAndView("home");
         return page;
     }

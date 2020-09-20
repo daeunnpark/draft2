@@ -16,7 +16,7 @@ public class WebSocketController {
     @MessageMapping("/chat/message")
     @SendTo("/sub/public")
     public Message sendMessage(@Payload Message chatMessage, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        System.out.println("controller - msgggs" + chatMessage);
+        System.out.println("controller - msgggs " + chatMessage);
         System.out.println(userPrincipal.getUsername());
         return chatMessage;
     }
@@ -24,7 +24,7 @@ public class WebSocketController {
     @MessageMapping("/chat/addUser")
     @SendTo("/sub/public")
     public Message addUser(@Payload Message chatMessage,
-                               SimpMessageHeaderAccessor headerAccessor) {
+                           SimpMessageHeaderAccessor headerAccessor) {
         // Add username in web socket session
         headerAccessor.getSessionAttributes().put("userId", chatMessage.getUserId());
         return chatMessage;

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IMessageService {
     List<Message> findRecentMsg(Long chatId);
+    void addMessage(Message message);
 }

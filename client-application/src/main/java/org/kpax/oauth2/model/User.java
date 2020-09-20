@@ -19,8 +19,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String image = "https://www.azocleantech.com/images/Article_Images/ImageForArticle_1061_15837536188863190.png";
-
+	private String image;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	@Getter(value = AccessLevel.NONE)
@@ -36,7 +35,6 @@ public class User {
 	private List<Chat> chats = new ArrayList<>();
 
 	public List<Chat> getChats() {
-		System.out.println("**** custom getchat()");
 		this.chats.sort(Comparator.comparing(Chat::getLastAt).reversed());
 		return this.chats;
 	}

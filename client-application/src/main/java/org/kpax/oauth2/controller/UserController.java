@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +19,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value="/users", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/users", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse getChatMembers(@AuthenticationPrincipal UserPrincipal principal) {
         Object data = Collections.singletonMap("users", userService.getAll());
-        return new ApiResponse(true,data);
+        return new ApiResponse(true, data);
     }
 
 }

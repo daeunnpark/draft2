@@ -61,7 +61,7 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
 
                 .authorizeRequests()
-                    .antMatchers("/")
+                    .antMatchers("/", "/index")
                     .permitAll()
                     .and()
                 //Test

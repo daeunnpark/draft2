@@ -28,7 +28,6 @@ public class Chat {
     private String name;
 
     public List<User> getMembers() {
-        System.out.println("***Custom memberss");
         this.members.sort(Comparator.comparing(User::getName));
         return members;
     }
