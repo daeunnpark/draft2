@@ -2,6 +2,7 @@ package org.kpax.oauth2.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Accessors(chain = true)
 public class Media {
     public enum MediaType{
         PHOTO,

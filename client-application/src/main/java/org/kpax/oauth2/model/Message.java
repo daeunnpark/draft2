@@ -3,6 +3,7 @@ package org.kpax.oauth2.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@Accessors(chain = true)
 public class Message {
     public enum MessageType {
         EMOTICON,

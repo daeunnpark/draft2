@@ -32,16 +32,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    /*
-    @Value("${ebook.chat.relay.host}")
+
+    @Value("${chat.relay.host}")
     private String relayHost;
 
-    @Value("${ebook.chat.relay.port}")
+    @Value("${chat.relay.port}")
     private Integer relayPort;
-    */
+
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
     @Autowired
     private JwtTokenProvider tokenProvider;
 
@@ -53,9 +54,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");                 // /app
-        registry.enableSimpleBroker("/sub");            // /topic
+        //registry.enableSimpleBroker("/sub");            // /topic
         // RabbitMQ
         //registry.enableStompBrokerRelay("/queue/", "/topic/")
+
         /*
         registry.enableStompBrokerRelay("/sub")
                 .setUserDestinationBroadcast("/topic/unresolved.user.dest")
@@ -63,7 +65,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setRelayHost(relayHost)
                 .setRelayPort(relayPort);
 
-         */
+*/
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
+@Accessors(chain = true)
 @Table(name = "User")
 public class User {
 	@Id
@@ -30,7 +32,7 @@ public class User {
 	private String phone;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@Getter(AccessLevel.NONE)
+	//@Getter(AccessLevel.NONE)
 	@ManyToMany(mappedBy = "members")
 	private List<Chat> chats = new ArrayList<>();
 

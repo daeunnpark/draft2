@@ -60,11 +60,15 @@ public class ChatService implements IChatService{
     @Override
     public void sentPublicMessage(Message message) {
         webSocketMessagingTemplate.convertAndSend(
-                Destinations.ChatRoom.publicMessages(message.getChat().getId()),
+                Destinations.ChatRoom.MessagesInList(message.getUserId()),
+                message);
+        webSocketMessagingTemplate.convertAndSend(
+                Destinations.ChatRoom.MessagesInRoom(message.getChat().getId()),
                 message);
 
         messageRepository.save(message);
     }
+
 
     @Override
     public void sentPrivateMessage(Message message) {
@@ -79,9 +83,11 @@ public class ChatService implements IChatService{
                 Destinations.ChatRoom.privateMessages(message.getChat().getId()),
                 message);
 
-         */
+
         messageRepository.save(message);
+        */
     }
+
 
     @Override
     public List<Chat> findAll() {
