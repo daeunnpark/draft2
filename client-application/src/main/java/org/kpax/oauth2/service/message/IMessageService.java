@@ -1,10 +1,15 @@
 package org.kpax.oauth2.service.message;
 
-import org.kpax.oauth2.model.Message;
+import org.kpax.oauth2.dto.model.MessageDto;
 
 import java.util.List;
 
 public interface IMessageService {
-    List<Message> findRecentMsg(Long chatId);
-    void addMessage(Message message);
+    MessageDto findById(Long messageId);
+
+    List<MessageDto> findRecentMsg(Long chatId);
+
+    void addMessage(MessageDto messageDto);
+
+    void saveMessage(MessageDto messageDto);
 }

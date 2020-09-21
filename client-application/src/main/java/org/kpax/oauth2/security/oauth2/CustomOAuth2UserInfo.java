@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class CustomOAuth2UserInfo extends OAuth2UserInfo {
 
-    public  CustomOAuth2UserInfo(Map<String, Object> attributes) {
+    public CustomOAuth2UserInfo(Map<String, Object> attributes) {
         super(attributes);
     }
 

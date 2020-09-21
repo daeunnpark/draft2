@@ -1,6 +1,7 @@
 package org.kpax.oauth2.security.oauth2;
 
 //import com.example.springsocial.exception.BadRequestException;
+
 import org.kpax.oauth2.security.api.JwtTokenProvider;
 import org.kpax.oauth2.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         if (response.isCommitted()) {
-             logger.debug("Response has already been committed. Unable to redirect to " + redirect_uri);
+            logger.debug("Response has already been committed. Unable to redirect to " + redirect_uri);
             return;
         }
         System.out.println("***handler hereees");

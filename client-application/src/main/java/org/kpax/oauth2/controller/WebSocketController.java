@@ -1,6 +1,7 @@
 package org.kpax.oauth2.controller;
 
 
+import org.kpax.oauth2.dto.model.MessageDto;
 import org.kpax.oauth2.model.Message;
 import org.kpax.oauth2.model.UserPrincipal;
 import org.kpax.oauth2.service.chat.ChatService;
@@ -20,38 +21,37 @@ public class WebSocketController {
 
     @MessageMapping("/chat/message")
     @SendTo("/sub/public")
-    public Message sendMessage(@Payload Message chatMessage, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        System.out.println("controller - msgggs " + chatMessage);
-        System.out.println(userPrincipal.getUsername());
-        return chatMessage;
+    public MessageDto sendMessage(@Payload MessageDto messageDto, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+       // System.out.println("controller - msgggs " + messageDto);
+       // System.out.println(userPrincipal.getUsername());
+        return messageDto;
     }
 
     @MessageMapping("/chat/addUser")
     @SendTo("/sub/public")
-    public Message addUser(@Payload Message chatMessage,
+    public MessageDto addUser(@Payload MessageDto messageDto,
                            SimpMessageHeaderAccessor headerAccessor) {
-        // Add username in web socket session
-        headerAccessor.getSessionAttributes().put("userId", chatMessage.getUserId());
-        return chatMessage;
+        //headerAccessor.getSessionAttributes().put("userId", messageDto.getUserId());
+        return messageDto;
     }
 
     @MessageMapping("/chat/self/message")
-    public void sendSelfMessage(@Payload Message message, @AuthenticationPrincipal UserPrincipal userPrincipal,
+    public void sendSelfMessage(@Payload MessageDto messageDto, @AuthenticationPrincipal UserPrincipal userPrincipal,
                             SimpMessageHeaderAccessor headerAccessor) {
-        chatService.sentPrivateMessage(message);
+        chatService.sentPublicMessage(messageDto);
     }
 
     @MessageMapping("/chat/private/message")
-    public void sendPrivateMessage(@Payload Message message, @AuthenticationPrincipal UserPrincipal userPrincipal,
-                            SimpMessageHeaderAccessor headerAccessor) {
-        chatService.sentPrivateMessage(message);
+    public void sendPrivateMessage(@Payload MessageDto messageDto, @AuthenticationPrincipal UserPrincipal userPrincipal,
+                                   SimpMessageHeaderAccessor headerAccessor) {
+        //chatService.sentPrivateMessage(messageDto);
     }
 
     @MessageMapping("/chat/group/message")
-    public void sendGroupMessage(@Payload Message message, @AuthenticationPrincipal UserPrincipal userPrincipal,
+    public void sendGroupMessage(@Payload MessageDto messageDto, @AuthenticationPrincipal UserPrincipal userPrincipal,
                             SimpMessageHeaderAccessor headerAccessor) {
 
-        chatService.sentPublicMessage(message);
+        chatService.sentPublicMessage(messageDto);
     }
 
 

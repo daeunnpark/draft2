@@ -1,37 +1,60 @@
 package org.kpax.oauth2.service.chat;
 
+import org.kpax.oauth2.dto.mapper.ChatMapper;
+import org.kpax.oauth2.dto.mapper.MessageMapper;
+import org.kpax.oauth2.dto.mapper.UserMapper;
+import org.kpax.oauth2.dto.mapper.config.CycleAvoidingMappingContext;
+import org.kpax.oauth2.dto.model.ChatDto;
+import org.kpax.oauth2.dto.model.MessageDto;
+import org.kpax.oauth2.dto.model.UserDto;
+import org.kpax.oauth2.exception.ResourceNotFoundException;
 import org.kpax.oauth2.model.Chat;
 import org.kpax.oauth2.model.Message;
 import org.kpax.oauth2.model.User;
 import org.kpax.oauth2.repository.ChatRepository;
 import org.kpax.oauth2.repository.MessageRepository;
-import org.kpax.oauth2.service.user.UserService;
+import org.kpax.oauth2.repository.UserRepository;
 import org.kpax.oauth2.util.Destinations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class ChatService implements IChatService{
+public class ChatService implements IChatService {
     @Autowired
     ChatRepository chatRepository;
 
     @Autowired
-    private UserService userService;
+    MessageRepository messageRepository;
+
+    @Autowired
+    CycleAvoidingMappingContext context;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private SimpMessagingTemplate webSocketMessagingTemplate;
 
-    @Autowired
-    MessageRepository messageRepository;
+    @Override
+    public ChatDto findById(Long chatId) {
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new ResourceNotFoundException("Chat", "chatId", chatId));
+        return ChatMapper.MAPPER.fromChat(chat, context);
+    }
 
     @Override
-    public List<Chat> findByUserId(Long userId) {
-        return chatRepository.findByMembersId(userId);
+    public List<ChatDto> findByUserId(Long userId) {
+        return chatRepository.findByMembersId(userId)
+                .stream().map(Chat -> ChatMapper.MAPPER.fromChat(Chat, context))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -40,92 +63,60 @@ public class ChatService implements IChatService{
     }
 
     @Override
-    public Chat findById(Long chatId) {
-        return chatRepository.findById(chatId).get();
+    public void sentPublicMessage(MessageDto messageDto) {
+        webSocketMessagingTemplate.convertAndSend(
+                Destinations.ChatRoom.MessagesInList(messageDto.getUser().getId()),
+                messageDto);
+        webSocketMessagingTemplate.convertAndSend(
+                Destinations.ChatRoom.MessagesInRoom(messageDto.getUser().getId()),
+                messageDto);
+
+        Message message = MessageMapper.MAPPER.toMessage(messageDto, context);
+        messageRepository.save(message);
     }
 
-    public List<Long> exit(Long userId, List<Integer> chatIds){
-        System.out.println(chatIds);
+    public List<Long> exit(Long userId, List<Integer> chatIds) {
         List<Long> exitChatIds = new ArrayList<>();
-        User user = userService.findById(userId).get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        for(Integer chatId : chatIds){
+        for (Integer chatId : chatIds) {
             Long longChatId = chatId.longValue();
-            chatRepository.findById(longChatId).get().getMembers().remove(user);
+            Chat chat = chatRepository.findById(longChatId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Chat", "chatId", longChatId));
+            chat.getMembers().remove(user);
             exitChatIds.add(longChatId);
         }
         return exitChatIds;
     }
 
-    @Override
-    public void sentPublicMessage(Message message) {
-        webSocketMessagingTemplate.convertAndSend(
-                Destinations.ChatRoom.MessagesInList(message.getUserId()),
-                message);
-        webSocketMessagingTemplate.convertAndSend(
-                Destinations.ChatRoom.MessagesInRoom(message.getChat().getId()),
-                message);
+    public ChatDto create(Long userId, ChatDto chatDto) {
+        chatDto.getFriendIds().add(userId);
+        List<UserDto> members = new ArrayList<>();
 
-        messageRepository.save(message);
-    }
-
-
-    @Override
-    public void sentPrivateMessage(Message message) {
-        /*
-        webSocketMessagingTemplate.convertAndSendToUser(
-                instantMessage.getToUser(),
-                Destinations.ChatRoom.privateMessages(message.getChat().getId()),
-                message);
-
-        webSocketMessagingTemplate.convertAndSendToUser(
-                instantMessage.getFromUser(),
-                Destinations.ChatRoom.privateMessages(message.getChat().getId()),
-                message);
-
-
-        messageRepository.save(message);
-        */
-    }
-
-
-    @Override
-    public List<Chat> findAll() {
-        return chatRepository.findAll();
-    }
-
-    @Override
-    public Chat save(Chat chat) {
-        return chatRepository.save(chat);
-    }
-
-    public Chat create(Long userId, Chat chat){
-        chat.getFriendIds().add(userId);
-
-        List<User> members = new ArrayList<>();
-
-        for(Long id : chat.getFriendIds()){
-            User friend = userService.findById(id).get();
-            friend.getChats().add(chat);
-            members.add(friend);
+        for (Long id : chatDto.getFriendIds()) {
+            User friend = userRepository.findById(userId).get();
+            friend.getChats().add(ChatMapper.MAPPER.toChat(chatDto, context));
+            members.add(UserMapper.MAPPER.fromUser(friend, context));
         }
-        chat.setMembers(members);
 
-        if(members.size()==1) {
-            chat.setType(Chat.ChatType.SELF);
-        }else if(members.size()>2){
-            chat.setType(Chat.ChatType.GROUP);
+        chatDto.setMembers(members);
+
+        if (members.size() == 1) {
+            chatDto.setType(Chat.ChatType.SELF.toString());
+        } else if (members.size() > 2) {
+            chatDto.setType(Chat.ChatType.GROUP.toString());
         }
-        chat.setLastAt(new Date());
-
-        return chatRepository.save(chat);
+        chatDto.setLastAt(new Date());
+        return saveChat(chatDto);
     }
 
-    /*
-    public Chat save(Chat chat) {
-        return chatRepository.save(chat);
+
+    @Override
+    public ChatDto saveChat(ChatDto chatDto) {
+        Chat chat = ChatMapper.MAPPER.toChat(chatDto, context);
+        return ChatMapper.MAPPER.fromChat(chatRepository.save(chat), context);
     }
-
-     */
-
 }
+
+

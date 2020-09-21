@@ -3,8 +3,6 @@ package org.kpax.oauth2.security.oauth2;
 import org.kpax.oauth2.model.User;
 import org.kpax.oauth2.model.UserPrincipal;
 import org.kpax.oauth2.repository.UserRepository;
-import org.kpax.oauth2.security.oauth2.CustomOAuth2UserInfo;
-import org.kpax.oauth2.security.oauth2.OAuth2UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -57,7 +55,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
-        System.out.println("****registering new");
         User user = new User();
         user.setUsername(oAuth2UserInfo.getUsername());
         user.setName(oAuth2UserInfo.getName());
@@ -67,8 +64,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        System.out.println("****updating existing");
-        //existingUser.setUsername(oAuth2UserInfo.getUsername());
         existingUser.setName(oAuth2UserInfo.getName());
         existingUser.setEmail(oAuth2UserInfo.getEmail());
         existingUser.setPhone(oAuth2UserInfo.getPhone());

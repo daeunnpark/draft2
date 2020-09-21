@@ -1,12 +1,13 @@
 package org.kpax.oauth2.service.user;
 
-import org.kpax.oauth2.model.User;
+import org.kpax.oauth2.dto.model.UserDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IUserService {
-    Optional<User> findById(Long userId);
-    List<User> findByChatId(Long chatId);
-    List<User> getAll();
+    UserDto findById(Long userId);
+
+    List<UserDto> findByChatId(Long chatId);
+
+    List<UserDto> getAll();
 }

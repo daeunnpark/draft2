@@ -1,11 +1,11 @@
 package org.kpax.oauth2.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.management.relation.Relation;
 import javax.persistence.*;
 
 
@@ -14,13 +14,9 @@ import javax.persistence.*;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 public class Relationship {
 
-    public enum RelationshipType{
-        NONE,
-        FRIEND,
-        BLOCKED
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,9 +27,16 @@ public class Relationship {
     @Enumerated(EnumType.STRING)
     private RelationshipType status;
 
-    public Relationship(User user1, User user2, RelationshipType status){
-        this.user1=user1;
-        this.user2=user2;
-        this.status=status;
+    /*
+    public Relationship(User user1, User user2, RelationshipType status) {
+        this.user1 = user1;
+        this.user2 = user2;
+        this.status = status;
+    }*/
+
+    public enum RelationshipType {
+        NONE,
+        FRIEND,
+        BLOCKED
     }
 }

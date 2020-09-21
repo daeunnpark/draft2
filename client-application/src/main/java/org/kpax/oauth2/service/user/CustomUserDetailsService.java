@@ -1,6 +1,7 @@
 package org.kpax.oauth2.service.user;
 
-//import com.example.springsocial.exception.ResourceNotFoundException;
+
+import org.kpax.oauth2.exception.ResourceNotFoundException;
 import org.kpax.oauth2.model.User;
 import org.kpax.oauth2.model.UserPrincipal;
 import org.kpax.oauth2.repository.UserRepository;
@@ -10,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Service
@@ -25,19 +24,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username : " + username)
-                );
-
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username : " + username));
         return UserPrincipal.create(user);
     }
 
     @Transactional
     public UserDetails loadUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException("User not found with id : " + id) // new ResourceNotFoundException("User", "id", id)
-        );
-
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
         return UserPrincipal.create(user);
     }
 

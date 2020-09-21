@@ -1,5 +1,6 @@
 package org.kpax.oauth2.controller;
 
+import org.kpax.oauth2.dto.model.MessageDto;
 import org.kpax.oauth2.model.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +35,11 @@ public class WebSocketEventListener {
         if (userId!= null) {
             logger.info("User Disconnected : " + userId);
 
-            Message chatMessage = new Message();
-            chatMessage.setType(Message.MessageType.NOTI);
-            chatMessage.setUserId(userId);
+            MessageDto messageDto = new MessageDto();
+            messageDto.setType(Message.MessageType.NOTI.toString());
+            //messageDto.setUser(userId);
 
-            messagingTemplate.convertAndSend("/topic/public", chatMessage);
+            messagingTemplate.convertAndSend("/topic/public", messageDto);
         }
     }
 }

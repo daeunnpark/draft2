@@ -16,6 +16,10 @@
     <artifactId>client-application</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -124,6 +128,17 @@
             <version>0.0.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -168,6 +183,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
+
     </build>
 </project>

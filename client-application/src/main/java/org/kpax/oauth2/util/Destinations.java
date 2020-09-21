@@ -19,7 +19,6 @@ public class Destinations {
         public static String connectedUsers(Long chatId) {
             return "/topic/" + chatId + ".connected.users";
         }
-
          */
     }
 }

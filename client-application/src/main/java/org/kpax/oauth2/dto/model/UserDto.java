@@ -1,10 +1,16 @@
 package org.kpax.oauth2.dto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -12,13 +18,20 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
     private Long id;
     private String name;
     private String image;
-    private String password;
-    private String username;
-    private String email;
-    private String phone;
-    private List<Long> chatIds;
+    @JsonIgnore
+    private List<ChatDto> chats;
+    private boolean active;
+
+    /*
+    public List<ChatDto> getChats() {
+        this.chats.sort(Comparator.comparing(ChatDto::getLastAt).reversed());
+        return this.chats;
+    }
+     */
 }

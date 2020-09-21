@@ -1,18 +1,17 @@
 package org.kpax.oauth2.dto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.kpax.oauth2.model.Relationship;
-import org.kpax.oauth2.model.User;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
 
 @Getter
 @Setter
 @Accessors(chain = true)
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RelationshipDto {
     private Long id;
     private Long user1Id;
