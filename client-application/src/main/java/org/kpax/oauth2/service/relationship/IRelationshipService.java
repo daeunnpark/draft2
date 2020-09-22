@@ -14,5 +14,4 @@ public interface IRelationshipService {
 
     void deleteFriend(Long userId, Long friendId);
 
-    //void save(RelationshipD relation);
 }

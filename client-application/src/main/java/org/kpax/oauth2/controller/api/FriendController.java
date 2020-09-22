@@ -27,13 +27,13 @@ public class FriendController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse addFriend(@AuthenticationPrincipal UserPrincipal principal, @RequestBody UserDto userDto) {
         relationshipService.addFriend(principal.getId(), userDto.getId());
-        return new ApiResponse(true, "friendId", null);
+        return new ApiResponse(true, "friendId", userDto.getId());
     }
 
     @DeleteMapping(value = "/{friendId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ApiResponse deleteFriend(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long friendId) {
         relationshipService.deleteFriend(principal.getId(), friendId);
-        return new ApiResponse(true, "friendId", null);
+        return new ApiResponse(true, "friendId", friendId);
     }
 
 }

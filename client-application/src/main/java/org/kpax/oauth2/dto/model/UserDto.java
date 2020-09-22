@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.util.Comparator;
@@ -25,13 +22,13 @@ public class UserDto {
     private String name;
     private String image;
     @JsonIgnore
+    @Getter(value = AccessLevel.NONE)
     private List<ChatDto> chats;
     private boolean active;
 
-    /*
     public List<ChatDto> getChats() {
         this.chats.sort(Comparator.comparing(ChatDto::getLastAt).reversed());
         return this.chats;
     }
-     */
+
 }

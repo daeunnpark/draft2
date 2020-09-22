@@ -1,7 +1,5 @@
 package org.kpax.oauth2.security.oauth2;
 
-//import com.example.springsocial.exception.BadRequestException;
-
 import org.kpax.oauth2.security.api.JwtTokenProvider;
 import org.kpax.oauth2.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//import static com.example.springsocial.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -37,7 +34,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             logger.debug("Response has already been committed. Unable to redirect to " + redirect_uri);
             return;
         }
-        System.out.println("***handler hereees");
         clearAuthenticationAttributes(request, response);
         cookieUtils.addCookie(response, "access-token", tokenProvider.generateToken(authentication), maxAge);
         getRedirectStrategy().sendRedirect(request, response, redirect_uri);

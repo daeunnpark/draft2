@@ -1,5 +1,6 @@
 package org.kpax.oauth2.dto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class MessageDto {
     private Long id;
     private String type;
     private ChatDto chat;
-    private UserDto user;
+    private Long userId;
     private String content;
     private Date sentAt;
     private Integer unreadCnt;

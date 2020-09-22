@@ -14,7 +14,6 @@ import java.util.*;
 @Table(name = "Client")
 public class Oauth2Client implements ClientDetails {
 
-
     @Id
     private String clientId;
     private String clientSecret;
@@ -22,14 +21,14 @@ public class Oauth2Client implements ClientDetails {
     private User user;
     private String name;
     private String homepageUrl;
-
-    public void setResourceIds(String resourceIds) {
-        this.resourceIds = resourceIds;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
+    private String resourceIds;
+    private String scope;
+    private String grantTypes;
+    private String redirectUri;
+    private String authorities;
+    private Integer accessTokenValiditySeconds;
+    private Integer refreshTokenValiditySeconds;
+    private Boolean autoApprove;
 
     public String getGrantTypes() {
         return grantTypes;
@@ -37,18 +36,6 @@ public class Oauth2Client implements ClientDetails {
 
     public void setGrantTypes(String grantTypes) {
         this.grantTypes = grantTypes;
-    }
-
-    public void setAuthorities(String authorities) {
-        this.authorities = authorities;
-    }
-
-    public void setAccessTokenValiditySeconds(Integer accessTokenValiditySeconds) {
-        this.accessTokenValiditySeconds = accessTokenValiditySeconds;
-    }
-
-    public void setRefreshTokenValiditySeconds(Integer refreshTokenValiditySeconds) {
-        this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
     }
 
     public Boolean getAutoApprove() {
@@ -59,18 +46,13 @@ public class Oauth2Client implements ClientDetails {
         this.autoApprove = autoApprove;
     }
 
-    private String resourceIds;
-    private String scope;
-    private String grantTypes;
-    private String redirectUri;
-	private String authorities;
-    private Integer accessTokenValiditySeconds;
-    private Integer refreshTokenValiditySeconds;
-    private Boolean autoApprove;
-
     @Override
     public String getClientId() {
         return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     @Override
@@ -78,6 +60,10 @@ public class Oauth2Client implements ClientDetails {
         if (resourceIds == null) return null;
         String[] s = resourceIds.split(",");
         return new HashSet<>(Arrays.asList(s));
+    }
+
+    public void setResourceIds(String resourceIds) {
+        this.resourceIds = resourceIds;
     }
 
     @Override
@@ -90,6 +76,10 @@ public class Oauth2Client implements ClientDetails {
         return clientSecret;
     }
 
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
     @Override
     public boolean isScoped() {
         return scope != null;
@@ -100,6 +90,10 @@ public class Oauth2Client implements ClientDetails {
         if (scope == null) return null;
         String[] s = scope.split(",");
         return new HashSet<>(Arrays.asList(s));
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 
     @Override
@@ -122,14 +116,26 @@ public class Oauth2Client implements ClientDetails {
         return AuthorityUtils.createAuthorityList(authorities.split(","));
     }
 
+    public void setAuthorities(String authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public Integer getAccessTokenValiditySeconds() {
         return this.accessTokenValiditySeconds;
     }
 
+    public void setAccessTokenValiditySeconds(Integer accessTokenValiditySeconds) {
+        this.accessTokenValiditySeconds = accessTokenValiditySeconds;
+    }
+
     @Override
     public Integer getRefreshTokenValiditySeconds() {
         return this.refreshTokenValiditySeconds;
+    }
+
+    public void setRefreshTokenValiditySeconds(Integer refreshTokenValiditySeconds) {
+        this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
     }
 
     @Override
@@ -142,28 +148,20 @@ public class Oauth2Client implements ClientDetails {
         return null;
     }
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getHomepageUrl() {
-		return this.homepageUrl;
-	}
+        return this.homepageUrl;
+    }
 
-	public void setHomepageUrl(String homepageUrl) {
-		this.homepageUrl = homepageUrl;
-	}
-	
-    public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-      
-    public void setClientSecret(String clientSecret) {
-    	this.clientSecret=clientSecret;
+    public void setHomepageUrl(String homepageUrl) {
+        this.homepageUrl = homepageUrl;
     }
 
     /*

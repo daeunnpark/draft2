@@ -38,7 +38,7 @@ public class WebSocketController {
     @MessageMapping("/chat/self/message")
     public void sendSelfMessage(@Payload MessageDto messageDto, @AuthenticationPrincipal UserPrincipal userPrincipal,
                             SimpMessageHeaderAccessor headerAccessor) {
-        chatService.sentPublicMessage(messageDto);
+        chatService.sendPublicMessage(messageDto);
     }
 
     @MessageMapping("/chat/private/message")
@@ -51,7 +51,7 @@ public class WebSocketController {
     public void sendGroupMessage(@Payload MessageDto messageDto, @AuthenticationPrincipal UserPrincipal userPrincipal,
                             SimpMessageHeaderAccessor headerAccessor) {
 
-        chatService.sentPublicMessage(messageDto);
+        chatService.sendPublicMessage(messageDto);
     }
 
 

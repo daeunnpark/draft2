@@ -32,7 +32,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-
     @Value("${chat.relay.host}")
     private String relayHost;
 
@@ -53,19 +52,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/pub");                 // /app
-        //registry.enableSimpleBroker("/sub");            // /topic
-        // RabbitMQ
-        //registry.enableStompBrokerRelay("/queue/", "/topic/")
+        registry.setApplicationDestinationPrefixes("/pub");
+        registry.enableSimpleBroker("/sub");
 
-        /*
+        /* RabbitMQ
         registry.enableStompBrokerRelay("/sub")
                 .setUserDestinationBroadcast("/topic/unresolved.user.dest")
                 .setUserRegistryBroadcast("/topic/registry.broadcast")
                 .setRelayHost(relayHost)
                 .setRelayPort(relayPort);
-
-*/
+        */
     }
 
     @Override
@@ -78,23 +74,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    System.out.println("***CONNECTION ATTEMPTED");
-
                     try {
                         String jwt = getJwtFromSocketRequest(accessor);
 
                         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
 
                             Long userId = tokenProvider.getUserIdFromJWT(jwt);
-                            System.out.println("****SOCKET**** ID FROM JWT = " + userId);
-
                             UserDetails userDetails = customUserDetailsService.loadUserById(userId);
                             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                             accessor.setUser(auth);
-
-
-
                         }
                     } catch (Exception ex) {
                         logger.error("Could not set user authentication in security context", ex);

@@ -16,7 +16,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .anyRequest().authenticated()
                 .and()
                 .cors().disable();
-        System.out.println("******resourcee");
     }
 
 }

@@ -2,11 +2,9 @@ package org.kpax.oauth2.service.chat;
 
 import org.kpax.oauth2.dto.mapper.ChatMapper;
 import org.kpax.oauth2.dto.mapper.MessageMapper;
-import org.kpax.oauth2.dto.mapper.UserMapper;
 import org.kpax.oauth2.dto.mapper.config.CycleAvoidingMappingContext;
 import org.kpax.oauth2.dto.model.ChatDto;
 import org.kpax.oauth2.dto.model.MessageDto;
-import org.kpax.oauth2.dto.model.UserDto;
 import org.kpax.oauth2.exception.ResourceNotFoundException;
 import org.kpax.oauth2.model.Chat;
 import org.kpax.oauth2.model.Message;
@@ -14,6 +12,7 @@ import org.kpax.oauth2.model.User;
 import org.kpax.oauth2.repository.ChatRepository;
 import org.kpax.oauth2.repository.MessageRepository;
 import org.kpax.oauth2.repository.UserRepository;
+import org.kpax.oauth2.service.user.UserService;
 import org.kpax.oauth2.util.Destinations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -43,6 +42,9 @@ public class ChatService implements IChatService {
     @Autowired
     private SimpMessagingTemplate webSocketMessagingTemplate;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public ChatDto findById(Long chatId) {
         Chat chat = chatRepository.findById(chatId)
@@ -63,12 +65,12 @@ public class ChatService implements IChatService {
     }
 
     @Override
-    public void sentPublicMessage(MessageDto messageDto) {
+    public void sendPublicMessage(MessageDto messageDto) {
         webSocketMessagingTemplate.convertAndSend(
-                Destinations.ChatRoom.MessagesInList(messageDto.getUser().getId()),
+                Destinations.ChatRoom.MessagesInList(messageDto.getUserId()),
                 messageDto);
         webSocketMessagingTemplate.convertAndSend(
-                Destinations.ChatRoom.MessagesInRoom(messageDto.getUser().getId()),
+                Destinations.ChatRoom.MessagesInRoom(messageDto.getUserId()),
                 messageDto);
 
         Message message = MessageMapper.MAPPER.toMessage(messageDto, context);
@@ -91,21 +93,15 @@ public class ChatService implements IChatService {
     }
 
     public ChatDto create(Long userId, ChatDto chatDto) {
-        chatDto.getFriendIds().add(userId);
-        List<UserDto> members = new ArrayList<>();
+        chatDto.setMembers(chatDto.getFriendIds()
+                .stream().map(id -> userService.findById(id))
+                .collect(Collectors.toList()));
+        chatDto.getMembers().add(userService.findById(userId));
 
-        for (Long id : chatDto.getFriendIds()) {
-            User friend = userRepository.findById(userId).get();
-            friend.getChats().add(ChatMapper.MAPPER.toChat(chatDto, context));
-            members.add(UserMapper.MAPPER.fromUser(friend, context));
-        }
-
-        chatDto.setMembers(members);
-
-        if (members.size() == 1) {
-            chatDto.setType(Chat.ChatType.SELF.toString());
-        } else if (members.size() > 2) {
-            chatDto.setType(Chat.ChatType.GROUP.toString());
+        if (chatDto.getMembers().size() == 1) {
+            chatDto.setType("SELF");
+        } else if (chatDto.getMembers().size() > 2) {
+            chatDto.setType("GROUP");
         }
         chatDto.setLastAt(new Date());
         return saveChat(chatDto);
@@ -115,7 +111,14 @@ public class ChatService implements IChatService {
     @Override
     public ChatDto saveChat(ChatDto chatDto) {
         Chat chat = ChatMapper.MAPPER.toChat(chatDto, context);
+        addChatToMembers(chat);
         return ChatMapper.MAPPER.fromChat(chatRepository.save(chat), context);
+    }
+
+    public void addChatToMembers(Chat chat) {
+        for (User member : chat.getMembers()) {
+            member.getChats().add(chat);
+        }
     }
 }
 

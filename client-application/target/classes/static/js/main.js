@@ -28,7 +28,7 @@ function connect(event) {
         stompClient = Stomp.over(socket);
 
         var headers = {
-            'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNjAwMTUxMDk0LCJleHAiOjE2MDA3NTU4OTR9.vkQ6ppYVbJLRc2HFEkL-kpY3clyFd7bt9jKew2_9DGirAwavxRj9T6Zn1sAmC7gPe3h49zUtcsUfnoQXMFAkzA'
+            'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNjAwNzU3MzE0LCJleHAiOjE2MDEzNjIxMTR9.QMDuFOJCGQEp-qEFlKAPokNmwItkemlMaNvenyr3FX__mSn-c7sCAF5FNdfSd6Mf_-pldBVx3Ml5Hbh54EQJPw'
         };
         stompClient.connect(headers, onConnected, onError);
         //stompClient.connect({}, onConnected, onError);

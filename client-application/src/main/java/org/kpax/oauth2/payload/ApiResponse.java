@@ -17,6 +17,4 @@ public class ApiResponse {
         this.message = success ? "OK" : "ERROR";
         this.data = Collections.singletonMap(key, value);
     }
-
-
 }

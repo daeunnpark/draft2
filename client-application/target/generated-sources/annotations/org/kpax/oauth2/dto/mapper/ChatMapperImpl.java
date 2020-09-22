@@ -17,7 +17,7 @@ import org.kpax.oauth2.model.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-09-21T22:26:09+0900",
+    date = "2020-09-22T16:56:34+0900",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_261 (Oracle Corporation)"
 )
 public class ChatMapperImpl implements ChatMapper {
@@ -168,6 +168,8 @@ public class ChatMapperImpl implements ChatMapper {
         if ( messageDto.getType() != null ) {
             message.setType( Enum.valueOf( MessageType.class, messageDto.getType() ) );
         }
+        message.setChat( toChat( messageDto.getChat(), context ) );
+        message.setUserId( messageDto.getUserId() );
         message.setContent( messageDto.getContent() );
         message.setSentAt( messageDto.getSentAt() );
         message.setUnreadCnt( messageDto.getUnreadCnt() );
@@ -255,6 +257,8 @@ public class ChatMapperImpl implements ChatMapper {
         if ( message.getType() != null ) {
             messageDto.setType( message.getType().name() );
         }
+        messageDto.setChat( fromChat( message.getChat(), context ) );
+        messageDto.setUserId( message.getUserId() );
         messageDto.setContent( message.getContent() );
         messageDto.setSentAt( message.getSentAt() );
         messageDto.setUnreadCnt( message.getUnreadCnt() );

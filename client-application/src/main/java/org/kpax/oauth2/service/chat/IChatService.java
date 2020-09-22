@@ -12,9 +12,9 @@ public interface IChatService {
 
     void deleteById(Long chatId);
 
-    void sentPublicMessage(MessageDto messageDto);
+    void sendPublicMessage(MessageDto messageDto);
 
     ChatDto saveChat(ChatDto chatDto);
-    //List<ChatDto> findAll();
 }
+
 

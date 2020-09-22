@@ -11,7 +11,7 @@ spring:
       client:
         registration:
           daeun:
-            client-id: sally_first_app1600150912610
+            client-id: CHATAPP
             client-secret: 740c6955e09d51423f21cda8aa3d6b0bd8a113aaa546e9ae9486b600aabdaaa6
             authorization-grant-type: authorization_code
             redirect-uri-template: http://localhost:8080/login/oauth2/code/daeun

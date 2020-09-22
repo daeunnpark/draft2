@@ -1,5 +1,6 @@
 package org.kpax.oauth2.controller.api;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.kpax.oauth2.dto.model.ChatDto;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,53 +66,48 @@ public class ChatController {
     }
 
     @GetMapping(value = "/{chatId}/translate", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ApiResponse translate(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long chatId) {
+    public ApiResponse translate(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long chatId) throws IOException {
 
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String clientId = "RbKDSUzyil08gSg4uTQY";
         String clientSecret = "ci7o5IPttV";
+
+        String delimiter = "%";
+        String text = "안녕하세요, 반가워요!";
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         requestHeaders.add("X-Naver-Client-Id", clientId);
         requestHeaders.add("X-Naver-Client-Secret", clientSecret);
 
-        String text = "";
-        List<MessageDto> messages = messageService.findRecentMsg(chatId);
-        for (MessageDto m : messages) {
-            text += "//" + m.getContent();
-        }
-
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("source", "ko");
         map.add("target", "en");
         map.add("text", text);
 
-        RestTemplate restTemplate = new RestTemplate();
-
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, requestHeaders);
-
-        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(
+        ResponseEntity<String> responseEntity = new RestTemplate().exchange(
                 apiURL,
                 HttpMethod.POST,
                 request,
-                JSONObject.class
+                String.class
         );
 
+        MessageDto messageDto = null;
+
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            System.out.println("response received");
-            System.out.println(responseEntity.getBody());
-            //String [] translated = responseEntity.getBody().get("message");.//split("//");
-            int nth = 0;
-            for (MessageDto m : messages) {
-                //s m.setContent(translated[nth]);
-            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readValue(responseEntity.getBody(), JsonNode.class);
+
+            String translatedText = jsonNode.get("message").get("result").get("translatedText").asText();
+
+            messageDto = new MessageDto().setContent(translatedText);
         } else {
             System.out.println("error occurred");
             System.out.println(responseEntity.getStatusCode());
         }
 
-        return new ApiResponse(true, "translated_messages", messages);
+        return new ApiResponse(true, "translated_message", messageDto);
     }
 
 }

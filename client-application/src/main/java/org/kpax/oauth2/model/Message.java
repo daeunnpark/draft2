@@ -16,16 +16,22 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(EnumType.STRING)
     private MessageType type;
+
     @OneToOne
     private Chat chat;
-    @OneToOne
-    private User user;
+
+    private Long userId;
+
     private String content;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date sentAt;
+
     private Integer unreadCnt;
+
     public enum MessageType {
         EMOTICON,
         TEXT,

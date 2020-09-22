@@ -40,7 +40,6 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserDto> getAll() {
-        System.out.println("GET ALL");
         List<UserDto> users = userRepository.findAll()
                 .stream().map(user -> UserMapper.MAPPER.fromUser(user, context))
                 .collect(Collectors.toList());

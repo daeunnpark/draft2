@@ -53,23 +53,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .tokenStore(tokenStore)
                 .userApprovalHandler(userApprovalHandler)
                 .authenticationManager(authenticationManager);
-        System.out.println("******AUTH");
     }
 
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(customClientDetailsService);
-
-        /*
-        clients.inMemory()
-                .withClient("testClientID")
-                .secret(passwordEncoder.encode("testClientPW"))
-                .authorizedGrantTypes("authorization_code", "password", "client_credentials")
-                .scopes("id", "name", "email", "phone")
-                .redirectUris("http://localhost:8082/client/login/oauth2/code/daeun")
-        ;
-        */
-
     }
 
 

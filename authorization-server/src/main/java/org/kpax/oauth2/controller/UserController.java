@@ -21,18 +21,6 @@ public class UserController {
 
     @Autowired UserRepository userRepository;
 
-    @RequestMapping("/user/me")
-    public Principal user(Principal principal) {
-        return principal;
-    }
-
-    @PreAuthorize("#oauth2.hasScope('read')")
-    @RequestMapping("/user/also-me")
-    public String test(Principal user) {
-        return "The principal's name is: " + user.getName();
-    }
-
-
     @RequestMapping("/user/info")
     public Map<String, Object> userData(@AuthenticationPrincipal OAuth2Authentication auth, Principal p) {
         Map<String, Object> profile = new HashMap<String, Object>();
@@ -57,5 +45,20 @@ public class UserController {
 
         return profile;
     }
+
+    /*
+    @RequestMapping("/user/me")
+    public Principal user(Principal principal) {
+        return principal;
+    }
+
+    @PreAuthorize("#oauth2.hasScope('read')")
+    @RequestMapping("/user/also-me")
+    public String test(Principal user) {
+        return "The principal's name is: " + user.getName();
+    }
+    */
+
+
 
 }

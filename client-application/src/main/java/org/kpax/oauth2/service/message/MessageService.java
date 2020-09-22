@@ -44,7 +44,6 @@ public class MessageService implements IMessageService {
         Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new ResourceNotFoundException("Message", "messageId", messageId));
         return MessageMapper.MAPPER.fromMessage(message, context);
-        // return MessageMapper.toMessageDto(message);
     }
 
     @Override
@@ -63,16 +62,6 @@ public class MessageService implements IMessageService {
 
     @Override
     public void saveMessage(MessageDto messageDto) {
-        /*
-        Message message = new Message();
-        message.setId(messageDto.getId());
-        message.setType(Message.MessageType.TEXT);
-        message.setChat(chatService.getChat(messageDto.getChatId()));
-        message.setUser(userRepository.findById(messageDto.getUserId()).get());
-        message.setContent(messageDto.getContent());
-        message.setSentAt(messageDto.getSentAt());
-        message.setUnreadCnt(messageDto.getUnreadCnt());
-        */
         Message message = MessageMapper.MAPPER.toMessage(messageDto, context);
         messageRepository.save(message);
     }

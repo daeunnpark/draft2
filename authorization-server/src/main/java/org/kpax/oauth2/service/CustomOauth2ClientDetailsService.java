@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 
-//@Service("clientDetailsService")
 @Service
 public class CustomOauth2ClientDetailsService implements ClientDetailsService{
 
@@ -17,11 +16,8 @@ public class CustomOauth2ClientDetailsService implements ClientDetailsService{
     private Oauth2ClientRepository oauth2ClientRepository;
 
     @Override
-  //  @Transactional
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         Oauth2Client client = oauth2ClientRepository.findByClientId(clientId);
-        ClientDetails d = new BaseClientDetails(client);
-        System.out.println(d.toString());
         return new BaseClientDetails(client);
     }
 }

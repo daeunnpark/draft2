@@ -19,35 +19,29 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Map;
 
 @Controller
-public class ResourceController {
+public class PageController {
 
     private final Resource indexPage;
 
     @Autowired
     private OAuth2RestOperations restOperations;
 
-    public ResourceController(@Value("classpath:/static/index.html") Resource indexPage) {
+    public PageController(@Value("classpath:/static/index.html") Resource indexPage) {
         this.indexPage = indexPage;
     }
 
     @GetMapping(value = {"/", "/mail"})
     public ResponseEntity<Resource> getFirstPage() {
-        //System.out.println("FE test");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_HTML);
         return new ResponseEntity<>(indexPage, headers, HttpStatus.OK);
     }
 
-    @RequestMapping("/its-also-me")
-    public String home() {
-        String message = restOperations.getForObject("http://localhost:8080/auth/user/also-me", String.class);
-        return "Message from auth server: " + message;
-    }
-
-    @RequestMapping("/callback")
-    public String callback() {
-        System.out.println("**call back sheree");
-        return "<div> Callback</div>";
+    @RequestMapping("/index")
+    public ModelAndView homee() {
+        ModelAndView page = new ModelAndView();
+        page.setViewName("index");
+        return page;
     }
 
     @RequestMapping("/userInfo")
@@ -56,16 +50,13 @@ public class ResourceController {
         return user.getAttributes();
     }
 
-    @RequestMapping("/index")
-    public ModelAndView homee() {
-        System.out.println("***index heree");
-        ModelAndView page = new ModelAndView();
-        page.setViewName("index");
-        return page;
+    @RequestMapping("/callback")
+    public String callback() {
+        System.out.println("**call back sheree");
+        return "<div> Callback</div>";
     }
 
-
-        /*
+    /*
     @RequestMapping("/its-me")
     public String home(Principal principal) {
         return "The principal's name is: " + principal.getName();
@@ -77,12 +68,10 @@ public class ResourceController {
         return "Message from auth server: " + message;
     }
 
-
     @RequestMapping("/its-me")
     public String home(Principal principal) {
         return "The principal's name is: " + principal.getName();
     }
-*/
-
+    */
 
 }
